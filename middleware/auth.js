@@ -42,10 +42,15 @@ function ensureLoggedIn(req, res, next) {
   }
 }
 
-/** Require admin user or raise unauthorized */
+
+/** Middleware to use when they be logged in as an admin user.
+ *
+ *  If not, raises Unauthorized.
+ */
+
 function ensureAdmin(req, res, next) {
   try {
-    if (!req.locals.user || !req.locals.user.isAdmin) {
+    if (!res.locals.user || !res.locals.user.isAdmin) {
       throw new UnauthorizedError();
     }
     return next();
@@ -71,6 +76,7 @@ function ensureCorrectUserOrAdmin(req, res, next) {
     return next(err);
   }
 }
+
 
 module.exports = {
   authenticateJWT,
